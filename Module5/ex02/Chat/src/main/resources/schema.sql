@@ -1,0 +1,32 @@
+CREATE TABLE IF NOT EXISTS users
+(
+user_id BIGSERIAL PRIMARY KEY,
+login VARCHAR(10) UNIQUE NOT NULL,
+password VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS rooms
+(
+room_id BIGSERIAL PRIMARY KEY,
+name VARCHAR(30),
+creator BIGINT,
+FOREIGN KEY (creator) REFERENCES users (user_id)
+);
+
+CREATE TABLE IF NOT EXISTS messages
+(
+message_id BIGSERIAL PRIMARY KEY,
+author BIGINT,
+FOREIGN KEY (author) REFERENCES users (user_id),
+room BIGINT,
+FOREIGN KEY (room) REFERENCES rooms (room_id),
+text VARCHAR(100),
+date TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS users_rooms
+(
+user_id BIGINT NOT NULL REFERENCES users,
+room_id BIGINT NOT NULL REFERENCES rooms,
+PRIMARY KEY(user_id, room_id)
+);
